@@ -1,0 +1,388 @@
+┌──(root㉿kali)-[~/Desktop/Postgres_Day_1st]
+└─# su postgres                                          
+postgres@kali:/root/Desktop/Postgres_Day_1st$ create HIPPA
+create: command not found
+postgres@kali:/root/Desktop/Postgres_Day_1st$ create db HIPPA
+create: command not found
+postgres@kali:/root/Desktop/Postgres_Day_1st$ createdb HIPPA
+could not change directory to "/root/Desktop/Postgres_Day_1st": Permission denied
+postgres@kali:/root/Desktop/Postgres_Day_1st$ psql HIPPA
+could not change directory to "/root/Desktop/Postgres_Day_1st": Permission denied
+psql (15.2 (Debian 15.2-2))
+Type "help" for help.
+
+HIPPA=# create table Movie(mno int primary key, mname text, ReleaseYear int);
+CREATE TABLE
+HIPPA=# insert into Movie values(1,'Super30',2023);
+INSERT 0 1
+HIPPA=# \t
+Tuples only is on.
+HIPPA=# /t
+HIPPA-# \
+invalid command \
+Try \? for help.
+HIPPA-# insert into Movie values(2,'Super31',2022);
+ERROR:  syntax error at or near "/"
+LINE 1: /t
+        ^
+HIPPA=# insert into Movie values(2,'Super31',2022);
+INSERT 0 1
+HIPPA=# insert into Movie values(3,'Super32',2021);
+INSERT 0 1
+HIPPA=# insert into Movie values(4,'Super33',2020);
+INSERT 0 1
+HIPPA=# insert into Movie values(4,'Super33',2019);
+ERROR:  duplicate key value violates unique constraint "movie_pkey"
+DETAIL:  Key (mno)=(4) already exists.
+HIPPA=# insert into Movie values(5,'Super34',2018);
+INSERT 0 1
+HIPPA=# insert into Movie values(6,'Super35',2017);
+INSERT 0 1
+HIPPA=# insert into Movie values(7,'Super36',2016);
+INSERT 0 1
+HIPPA=# insert into Movie values(8,'Super37',2015);
+INSERT 0 1
+HIPPA=# insert into Movie values(9,'Super38',2014);
+INSERT 0 1
+HIPPA=# insert into Movie values(10,'Super39',2013);
+INSERT 0 1
+HIPPA=# select * Movie
+HIPPA-# ;
+ERROR:  syntax error at or near "Movie"
+LINE 1: select * Movie
+                 ^
+HIPPA=# select * from Movie;
+   1 | Super30 |        2023
+   2 | Super31 |        2022
+   3 | Super32 |        2021
+   4 | Super33 |        2020
+   5 | Super34 |        2018
+   6 | Super35 |        2017
+   7 | Super36 |        2016
+   8 | Super37 |        2015
+   9 | Super38 |        2014
+  10 | Super39 |        2013
+
+HIPPA=# select * from Movie where ReleaseYear =2021;
+   3 | Super32 |        2021
+
+HIPPA=# select * from Movie where title like 'r%':
+HIPPA-# select * from Movie where title like 's%';
+ERROR:  syntax error at or near ":"
+LINE 1: select * from Movie where title like 'r%':
+                                                 ^
+HIPPA=#                                           
+select * from Movie where title like 's%';
+ERROR:  column "title" does not exist
+LINE 1: select * from Movie where title like 's%';
+                                  ^
+HIPPA=# 
+select * from Movie where title like 'S%';
+ERROR:  column "title" does not exist
+LINE 1: select * from Movie where title like 'S%';
+                                  ^
+HIPPA=# select * from Movie where title like 'S%';
+ERROR:  column "title" does not exist
+LINE 1: select * from Movie where title like 'S%';
+                                  ^
+HIPPA=# select * from Movie where mname like 'S%';
+   1 | Super30 |        2023
+   2 | Super31 |        2022
+   3 | Super32 |        2021
+   4 | Super33 |        2020
+   5 | Super34 |        2018
+   6 | Super35 |        2017
+   7 | Super36 |        2016
+   8 | Super37 |        2015
+   9 | Super38 |        2014
+  10 | Super39 |        2013
+
+HIPPA=# select * from Movie where mname like 'R%';
+
+HIPPA=# select * from Movie order by ReleaseYear asc;
+  10 | Super39 |        2013
+   9 | Super38 |        2014
+   8 | Super37 |        2015
+   7 | Super36 |        2016
+   6 | Super35 |        2017
+   5 | Super34 |        2018
+   4 | Super33 |        2020
+   3 | Super32 |        2021
+   2 | Super31 |        2022
+   1 | Super30 |        2023
+
+HIPPA=# delete from Movie where mname = 2;^C
+HIPPA=# delete from Movie where maname = 1:
+HIPPA-# delete from Movie where mname = 1;
+ERROR:  syntax error at or near ":"
+LINE 1: delete from Movie where maname = 1:
+                                          ^
+HIPPA=# select * from Movie;
+   1 | Super30 |        2023
+   2 | Super31 |        2022
+   3 | Super32 |        2021
+   4 | Super33 |        2020
+   5 | Super34 |        2018
+   6 | Super35 |        2017
+   7 | Super36 |        2016
+   8 | Super37 |        2015
+   9 | Super38 |        2014
+  10 | Super39 |        2013
+
+HIPPA=# delete from Movie where mname = 1;
+ERROR:  operator does not exist: text = integer
+LINE 1: delete from Movie where mname = 1;
+                                      ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+HIPPA=# delete from movie where mno = 1
+HIPPA-# select * from Movie;
+ERROR:  syntax error at or near "select"
+LINE 2: select * from Movie;
+        ^
+HIPPA=# select * from Movie;
+   1 | Super30 |        2023
+   2 | Super31 |        2022
+   3 | Super32 |        2021
+   4 | Super33 |        2020
+   5 | Super34 |        2018
+   6 | Super35 |        2017
+   7 | Super36 |        2016
+   8 | Super37 |        2015
+   9 | Super38 |        2014
+  10 | Super39 |        2013
+
+HIPPA=# delete from Movie where mno = 1;
+DELETE 1
+HIPPA=# select * from Movie;
+   2 | Super31 |        2022
+   3 | Super32 |        2021
+   4 | Super33 |        2020
+   5 | Super34 |        2018
+   6 | Super35 |        2017
+   7 | Super36 |        2016
+   8 | Super37 |        2015
+   9 | Super38 |        2014
+  10 | Super39 |        2013
+
+HIPPA=# select mno, mname from Movie where mno between 1 to 3;
+ERROR:  syntax error at or near "to"
+LINE 1: select mno, mname from Movie where mno between 1 to 3;
+                                                         ^
+HIPPA=# select mno, mname from Movie where mno between 1 and  3;
+   2 | Super31
+   3 | Super32
+
+HIPPA=# update Movie set ReleaseYear=2;
+UPDATE 9
+HIPPA=# select * from Movie;
+   2 | Super31 |           2
+   3 | Super32 |           2
+   4 | Super33 |           2
+   5 | Super34 |           2
+   6 | Super35 |           2
+   7 | Super36 |           2
+   8 | Super37 |           2
+   9 | Super38 |           2
+  10 | Super39 |           2
+
+HIPPA=# \t
+Tuples only is off.
+HIPPA=# \d
+         List of relations
+ Schema | Name  | Type  |  Owner   
+--------+-------+-------+----------
+ public | movie | table | postgres
+(1 row)
+
+HIPPA=# 
+HIPPA=# create table dept(dno int primary key, dname varchar(30), location varchar(30));
+CREATE TABLE
+HIPPA=# inset into dept values(1,'a','Pune');
+ERROR:  syntax error at or near "inset"
+LINE 1: inset into dept values(1,'a','Pune');
+        ^
+HIPPA=# insert into dept values(1,'a','Pune');
+INSERT 0 1
+HIPPA=# insert into dept values(2,'b','Nagapur');
+INSERT 0 1
+HIPPA=# insert into dept values(3,'c','Dharashiv');
+INSERT 0 1
+HIPPA=# insert into dept values(4,'d','Beed');
+INSERT 0 1
+HIPPA=# insert into dept values(5,'e','Kokan');
+INSERT 0 1
+HIPPA=# select * from dept;
+ dno | dname | location  
+-----+-------+-----------
+   1 | a     | Pune
+   2 | b     | Nagapur
+   3 | c     | Dharashiv
+   4 | d     | Beed
+   5 | e     | Kokan
+(5 rows)
+
+HIPPA=# create table emp(eno int primary key, ename varchar(30), designation varchar(30), salary float, dno int reference dept(dno));
+ERROR:  syntax error at or near "reference"
+LINE 1: ...), designation varchar(30), salary float, dno int reference ...
+                                                             ^
+HIPPA=# create table emp(eno int primary key, ename varchar(30), designation varchar(30), salary float, dno int references dept(dno));
+CREATE TABLE
+HIPPA=# insert into emp(1, 'Oliver', 'Security Engineer', 70000.00, 1);
+ERROR:  syntax error at or near "1"
+LINE 1: insert into emp(1, 'Oliver', 'Security Engineer', 70000.00, ...
+                        ^
+HIPPA=# insert into emp values(1, 'Oliver', 'Security Engineer', 70000.00, 1);
+INSERT 0 1
+HIPPA=# insert into emp values(2, 'Nilesh', 'lead Engineer', 70000.00, 20);
+ERROR:  insert or update on table "emp" violates foreign key constraint "emp_dno_fkey"
+DETAIL:  Key (dno)=(20) is not present in table "dept".
+HIPPA=# insert into emp values(2, 'Nilesh', 'lead Engineer', 80000.00, 20);
+ERROR:  insert or update on table "emp" violates foreign key constraint "emp_dno_fkey"
+DETAIL:  Key (dno)=(20) is not present in table "dept".
+HIPPA=# insert into emp values(2, 'Nilesh', 'lead Engineer', 80000.00, 2);
+INSERT 0 1
+HIPPA=# insert into emp values(2, 'Shubham', 'lead L3 Engineer', 80000.00, 3);
+ERROR:  duplicate key value violates unique constraint "emp_pkey"
+DETAIL:  Key (eno)=(2) already exists.
+HIPPA=# insert into emp values(3, 'Shubham', 'lead L3 Engineer', 80000.00, 3);
+INSERT 0 1
+HIPPA=# insert into emp values(4, 'Sarvesh', 'lead L2 Engineer', 90000.00, 4);
+INSERT 0 1
+HIPPA=# insert into emp values(5, 'Sham', 'lead L4 Engineer', 30000.00, 5);
+INSERT 0 1
+HIPPA=# select * from emp;
+ eno |  ename  |    designation    | salary | dno 
+-----+---------+-------------------+--------+-----
+   1 | Oliver  | Security Engineer |  70000 |   1
+   2 | Nilesh  | lead Engineer     |  80000 |   2
+   3 | Shubham | lead L3 Engineer  |  80000 |   3
+   4 | Sarvesh | lead L2 Engineer  |  90000 |   4
+   5 | Sham    | lead L4 Engineer  |  30000 |   5
+(5 rows)
+
+HIPPA=# select ename from emp where salary < 20000;
+ ename 
+-------
+(0 rows)
+
+HIPPA=# select ename from emp where salary < 80000;
+ ename  
+--------
+ Oliver
+ Sham
+(2 rows)
+
+HIPPA=# select ename from emp where salary > 30000;
+  ename  
+---------
+ Oliver
+ Nilesh
+ Shubham
+ Sarvesh
+(4 rows)
+
+HIPPA=# select ename from emp where salary >= 30000;
+  ename  
+---------
+ Oliver
+ Nilesh
+ Shubham
+ Sarvesh
+ Sham
+(5 rows)
+
+HIPPA=# select ename from dep d, emp e where e.dno=d.dno and dname = 'sales';
+ERROR:  relation "dep" does not exist
+LINE 1: select ename from dep d, emp e where e.dno=d.dno and dname =...
+                          ^
+HIPPA=# select ename from dept d, emp e where e.dno=d.dno and dname = 'sales';
+ ename 
+-------
+(0 rows)
+
+HIPPA=# select ename from dept d, emp e where e.dno=d.dno and dname = 'a';
+ ename  
+--------
+ Oliver
+(1 row)
+
+HIPPA=# select ename from dept d, emp e where e.dno=d.no and desgination=manager;
+ERROR:  column d.no does not exist
+LINE 1: select ename from dept d, emp e where e.dno=d.no and desgina...
+                                                    ^
+HINT:  Perhaps you meant to reference the column "d.dno".
+HIPPA=# select ename from dept d, emp e where e.dno=d.dno and desgination=manager;
+ERROR:  column "desgination" does not exist
+LINE 1: ...ct ename from dept d, emp e where e.dno=d.dno and desginatio...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "e.designation".
+HIPPA=# select ename from dept d, emp e where e.dno=d.dno and designation=manager;
+ERROR:  column "manager" does not exist
+LINE 1: ...rom dept d, emp e where e.dno=d.dno and designation=manager;
+                                                               ^
+HIPPA=# select ename from dept d, emp e where e.dno=d.dno and designation=a;
+ERROR:  column "a" does not exist
+LINE 1: ...name from dept d, emp e where e.dno=d.dno and designation=a;
+                                                                     ^
+HIPPA=# select ename from dept d, emp e where e.dno=d.dno and designation='a';
+ ename 
+-------
+(0 rows)
+
+HIPPA=# select ename from dept d, emp e where e.dno=d.dno and designation='b';
+ ename 
+-------
+(0 rows)
+
+HIPPA=# select ename from dept d, emp e where e.dno=d.dno and designation='^C
+HIPPA=# select count(eno) from emp e, dept d where e.dno=d.dno and dname=a;
+ERROR:  column "a" does not exist
+LINE 1: ...count(eno) from emp e, dept d where e.dno=d.dno and dname=a;
+                                                                     ^
+HIPPA=# select count(eno) from emp e, dept d where e.dno=d.dno and dname=b;
+ERROR:  column "b" does not exist
+LINE 1: ...count(eno) from emp e, dept d where e.dno=d.dno and dname=b;
+                                                                     ^
+HIPPA=# select count(eno) from emp e, dept d where e.dno=d.dno and dname='b';
+ count 
+-------
+     1
+(1 row)
+
+HIPPA=# select max(salary), min(salary) as minimum, avg(salary),sum(salary);
+ERROR:  column "salary" does not exist
+LINE 1: select max(salary), min(salary) as minimum, avg(salary),sum(...
+                   ^
+HIPPA=# select max(salary), min(salary) as minimum, avg(salary),sum(salary) from emp;
+  max  | minimum |  avg  |  sum   
+-------+---------+-------+--------
+ 90000 |   30000 | 70000 | 350000
+(1 row)
+
+HIPPA=# select dname from dept d, emp e where d.no=e.don and ename='Oliver';
+ERROR:  column d.no does not exist
+LINE 1: select dname from dept d, emp e where d.no=e.don and ename='...
+                                              ^
+HINT:  Perhaps you meant to reference the column "d.dno".
+HIPPA=# select dname from dept d, emp e where e.dno=d.dno and ename = 'Oliver';
+ dname 
+-------
+ a
+(1 row)
+
+HIPPA=# select ename from dept d, emp e where e.dno=d.no and designation = 'Security Engineer';
+ERROR:  column d.no does not exist
+LINE 1: select ename from dept d, emp e where e.dno=d.no and designa...
+                                                    ^
+HINT:  Perhaps you meant to reference the column "d.dno".
+HIPPA=# select ename from dept d, emp e where e.dno=dept.no and designation = 'Security Engineer';
+ERROR:  invalid reference to FROM-clause entry for table "dept"
+LINE 1: select ename from dept d, emp e where e.dno=dept.no and desi...
+                                                    ^
+HINT:  Perhaps you meant to reference the table alias "d".
+HIPPA=# select ename from dept d, emp e where e.dno=d.dno and designation = 'Security Engineer';
+ ename  
+--------
+ Oliver
+(1 row)
+
